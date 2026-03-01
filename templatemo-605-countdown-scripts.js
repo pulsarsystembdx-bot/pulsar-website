@@ -221,7 +221,7 @@ const translations = {
       'nav-traditions': 'Rejoins-nous',
       'nav-contact': 'Contact',
       'scroll': 'Scroll',
-      'hero-sub': "VIVEZ L'EXPÉRIENCE",
+      'hero-sub': "VIS L'EXPÉRIENCE",
       'hero-bottom': '',
       'about-title': 'QUI SOMMES-NOUS ?',
       'about-h3': "L'<span class=\"text-gradient-light\">harmonie</span> dans le <span class=\"text-gradient-dark\">chaos</span>",
