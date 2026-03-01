@@ -135,11 +135,35 @@ function setupNavigation() {
 // Newsletter form
 function setupNewsletter() {
    const form = document.getElementById('newsletterForm');
-   form.addEventListener('submit', (e) => {
+   form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const input = form.querySelector('input');
-      alert('Thank you for subscribing! You\'ll receive holiday updates at ' + input.value);
-      input.value = '';
+      const input = form.querySelector('input[type="email"]');
+      const btn = form.querySelector('button[type="submit"]');
+      const email = input.value.trim();
+      const originalText = btn.textContent;
+      btn.textContent = '...';
+      btn.disabled = true;
+      try {
+         const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+               'Accept': 'application/json',
+               'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiZDAyNjY3ZGM0MzZjYTNmYTc1NGIwM2VlMTBhZTY2NzYxYjE0YzIxOWNhNDRjYmRjODQ3ZjliMTgzMDNjNjE3OTc0YmNmYWQ1YTBkMzJiYmEiLCJpYXQiOjE3NzIzOTI5OTIuMTQ4ODU4LCJuYmYiOjE3NzIzOTI5OTIuMTQ4ODYsImV4cCI6NDkyODA2NjU5Mi4xNDQ2MDEsInN1YiI6IjE4NDA1MjQiLCJzY29wZXMiOltdfQ.ajq5zU4kShqLQ31QOiYxIShq-8hzqHFd7cono6MMBhhlg4YgKCJ_I-5Jc2p4zZWRDKy5y82XeJdRl1xGaSsTbrQSFXVW-330ONqXXHatD1ROQX76k79DShFBCpLq5j6Qt9afhiEK-kVeG6NIojl-u9oP3VE38PATKnRJOQkcQi5wEIl45gPk4HWCGigapU3M9h89LPlRRxYuAV61pulqG_kDWrAzZ8i48m4U7bNmEc_HtpYlnCTOiYQ9yOhz49TmFYVRSXqlno77Z26DUppM0zRv3TwvdGRtESY5a3X7ypyapMvi-R_Kx3_szSWRdXGytIXPIdZPtBlxXoPnv_T29WxEu19hSa-BldaWCHEfaFU7Y9OdoqNozIB7ZV7IucNN_zS_YMKs8lT4on80WUgdPE5uInjdX1SDNLpAsfblVuHP4xvqUtuLrx7HSoMUvfS3tSPgA-nMk9rfY-7yIfphMJJN6eNytGWS_aMpY1xPh6IldDjozi83NvNxvcRsqch5K5LF2C-tLtRWr4FO-h8C12ze-vtps9pqbO4egH17xgkBx75MiCtIHESTeQUD7u1NFp3y7mKv0SrZqmSMblxgzxboUDi95EnqQ7gJPw06wpzzyutGOnxCMt2ZxXqmeGu2rcF9XDRJ6c6TN2im6GWgLWCI8u7eIB_Z7_HsuL7stFM'
+            },
+            body: JSON.stringify({ email: email, groups: ['180767113275769899'] })
+         });
+         if (response.status === 200 || response.status === 201) {
+            btn.textContent = '✓ Inscrit !';
+            input.value = '';
+            setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 3000);
+         } else {
+            throw new Error('failed');
+         }
+      } catch {
+         btn.textContent = 'Erreur, réessaie';
+         setTimeout(() => { btn.textContent = originalText; btn.disabled = false; }, 3000);
+      }
    });
 }
 
@@ -191,10 +215,10 @@ function setupContactForm() {
 // Translations
 const translations = {
    fr: {
-      'nav-home': 'Home',
-      'nav-about': 'About',
-      'nav-events': 'Events',
-      'nav-traditions': 'Traditions',
+      'nav-home': 'Accueil',
+      'nav-about': 'À propos',
+      'nav-events': 'Événements',
+      'nav-traditions': 'Rejoins-nous',
       'nav-contact': 'Contact',
       'scroll': 'Scroll',
       'hero-sub': "VIVEZ L'EXPÉRIENCE",
@@ -206,7 +230,7 @@ const translations = {
       'about-p3': "Mais nous ne nous arrêtons pas là. Notre futur s'écrit entre fête radicale et médiation scientifique, pour nourrir vos oreilles autant que votre esprit.",
       'events-tag': 'À venir',
       'events-title': 'Nos Événements',
-      'events-subtitle': 'Marquez vos agendas pour ces soirées exceptionnelles',
+      'events-subtitle': 'Marque ton agenda pour nos prochains atterrissages.',
       'event1-title': 'Soirée Chorale',
       'event1-desc': "Une soirée de chants de Noël classiques interprétés par notre chorale communautaire sous les étoiles.",
       'event2-title': 'Échange de Biscuits',
@@ -214,21 +238,21 @@ const translations = {
       'event3-title': 'Veillée aux Bougies',
       'event3-desc': "Une célébration paisible de la veille de Noël avec des bougies, de la réflexion et l'esprit des fêtes.",
       'trad-tag': 'Traditions',
-      'trad-title': 'Traditions de Fête',
-      'trad-subtitle': 'Les rituels intemporels qui rendent Noël spécial',
-      'trad1-title': 'Décoration du Sapin',
-      'trad1-desc': "Accrocher des ornements collectés au fil des années, chacun racontant sa propre histoire des Noëls passés.",
-      'trad2-title': 'Échange de Cadeaux',
-      'trad2-desc': "Trouver le cadeau parfait pour quelqu'un de spécial, emballé avec amour et anticipation.",
+      'trad-title': 'Rejoins-nous',
+      'trad-subtitle': "Vivre l'événement, c'est bien. Le créer, c'est mieux.",
+      'trad1-title': 'Candidature bénévole',
+      'trad1-desc': "Pulsar System, c'est avant tout une aventure humaine. Tu veux vivre l'expérience de l'intérieur et nous aider à rendre la fête plus belle ? On t'attend !",
+      'trad2-title': 'Candidature DJ',
+      'trad2-desc': "Tu es DJ et tu souhaites mixer pour Pulsar System ? Ce formulaire est pour toi. Nous sommes régulièrement en recherche de nouveaux talents pour enflammer nos événements !",
       'trad3-title': 'Soirées Chocolat Chaud',
       'trad3-desc': "Se réunir près du feu avec des tasses chaudes, partager des histoires pendant que la neige tombe doucement.",
       'trad4-title': 'Festin de Noël',
       'trad4-desc': "Se retrouver autour de la table en famille pour un repas spécial et des conversations chaleureuses.",
       'learn-more': 'En savoir plus',
       'newsletter-tag': 'Restez Informés',
-      'newsletter-title': 'Rejoignez la Célébration',
-      'newsletter-desc': "Abonnez-vous pour recevoir les actualités, les rappels d'événements et une dose de magie directement dans votre boîte mail.",
-      'newsletter-placeholder': 'Entrez votre adresse email',
+      'newsletter-title': 'Entre dans le système',
+      'newsletter-desc': "Intercepte le signal avant tout le monde. En rejoignant le Système, tu accèdes aux coordonnées des lieux tenus secrets et aux ouvertures de billetterie avant l'annonce officielle.",
+      'newsletter-placeholder': 'Ton adresse email',
       'newsletter-btn': "S'abonner",
       'footer-desc': "Célébrer la magie de Noël avec un compte à rebours en direct, des événements et des traditions qui nous rassemblent.",
       'footer-nav-title': 'Navigation',
@@ -242,62 +266,58 @@ const translations = {
       'footer-copy': '© 2025 Pulsar System. Tous droits réservés.',
       'footer-privacy': 'Politique de confidentialité',
       'footer-terms': "Conditions d'utilisation",
-      'contact-title': 'Contactez-nous',
-      'contact-subtitle': 'Une question, une proposition ? On vous répond.',
+      'contact-title': 'Contacte-nous',
+      'contact-subtitle': 'Une question, une proposition ? On te répond.',
       'contact-name': 'Nom',
-      'contact-name-ph': 'Votre nom',
+      'contact-name-ph': 'Ton nom',
       'contact-email-label': 'Email',
-      'contact-email-ph': 'Votre email',
+      'contact-email-ph': 'Ton email',
       'contact-subject': 'Sujet',
-      'contact-subject-ph': 'Sujet de votre message',
+      'contact-subject-ph': 'Sujet de ton message',
       'contact-message': 'Message',
-      'contact-message-ph': 'Votre message...',
+      'contact-message-ph': 'Ton message...',
       'contact-send': 'Envoyer',
       'contact-sending': 'Envoi en cours...',
-      'contact-success': 'Message envoyé ! Nous vous répondrons rapidement.',
+      'contact-success': 'Message envoyé ! On te répond rapidement.',
       'contact-error': 'Erreur lors de l\'envoi, veuillez réessayer.',
    },
    en: {
       'nav-home': 'Home',
       'nav-about': 'About',
       'nav-events': 'Events',
-      'nav-traditions': 'Traditions',
+      'nav-traditions': 'Join Us',
       'nav-contact': 'Contact',
       'scroll': 'Scroll',
       'hero-sub': 'LIVE THE',
       'hero-bottom': 'EXPERIENCE',
       'about-title': 'WHO ARE WE?',
       'about-h3': '<span class="text-gradient-light">Harmony</span> in <span class="text-gradient-dark">chaos</span>',
-      'about-p1': "Pulsar System is a Bordeaux-based organization established in late 2024, dedicated to redefining event standards across France. Our expertise lies in activating unique venues through a respectful and heritage-conscious approach, elevating Techno performances into unparalleled immersive experiences.",
-      'about-p2': "Our DNA is built on precision-led, healthy, and safe organization. Whether you are a techno purist or simply curious, we create spaces where sound meets human connection. Each lineup is curated as a progressive ascent, exploring a vast palette of sonic textures. This stylistic diversity allows us to bring together a passionate and diverse crowd, ensuring every individual finds their place on the dancefloor.",
+      'about-p1': "Pulsar System is a Bordeaux-based collective born in late 2024, with the ambition to redefine the party and make all of France vibrate. Our specialty? Taking over unique venues to transform every Techno set into a one-of-a-kind immersive experience.",
+      'about-p2': "Our DNA is built on precision-led, healthy, and 100% safe organisation. Whether you are a techno purist or simply curious, we create spaces where sound meets human connection. Each lineup is crafted as a progressive ascent, exploring a wide palette of sonic textures. This stylistic diversity brings together a passionate and diverse crowd, where everyone finds their place on the dancefloor.",
       'about-p3': "But we don't stop there. Our future lies between radical celebration and scientific outreach, feeding your ears as much as your mind.",
       'events-tag': 'Upcoming',
       'events-title': 'Our Events',
-      'events-subtitle': 'Mark your calendar for these special celebrations',
-      'event1-title': 'Carol Night',
+      'events-subtitle': 'Mark your calendar for our upcoming landings.',
+      'event1-title': 'Soirée Chorale',
       'event1-desc': "An evening of classic Christmas carols performed by our community choir under the stars.",
-      'event2-title': 'Cookie Exchange',
-      'event2-desc': "Bring your favorite holiday treats and swap recipes with neighbors at our annual gathering.",
-      'event3-title': 'Candlelight Vigil',
-      'event3-desc': "A peaceful Christmas Eve celebration with candlelight, reflection, and seasonal spirit.",
-      'trad-tag': 'Cherished',
-      'trad-title': 'Holiday Traditions',
-      'trad-subtitle': 'The timeless rituals that make Christmas special',
-      'trad1-title': 'Decorating the Tree',
-      'trad1-desc': "Hanging ornaments collected over the years, each one telling its own story of Christmases past.",
-      'trad2-title': 'Secret Gift Exchange',
-      'trad2-desc': "Finding the perfect gift for someone special, wrapped with love and anticipation.",
-      'trad3-title': 'Hot Cocoa Nights',
-      'trad3-desc': "Gathering by the fire with warm mugs, sharing stories as snow falls softly outside.",
-      'trad4-title': 'Christmas Feast',
-      'trad4-desc': "Gathering around the table with family for a special meal and cherished conversations.",
+      'event2-title': 'Échange de Biscuits',
+      'event2-desc': "Bring your favourite treats and swap recipes with fellow attendees at our annual gathering.",
+      'event3-title': 'Veillée aux Bougies',
+      'event3-desc': "A peaceful celebration with candlelight, reflection, and the spirit of the season.",
+      'trad-tag': 'Join',
+      'trad-title': 'Join Us',
+      'trad-subtitle': "Experiencing the event is great. Creating it is better.",
+      'trad1-title': 'Volunteer Application',
+      'trad1-desc': "Pulsar System is above all a human adventure. Want to experience it from the inside and help make the party even better? We're waiting for you!",
+      'trad2-title': 'DJ Application',
+      'trad2-desc': "Are you a DJ looking to play for Pulsar System? This form is for you. We're always on the lookout for new talent to ignite our events!",
       'learn-more': 'Learn More',
       'newsletter-tag': 'Stay Updated',
-      'newsletter-title': 'Join the Celebration',
-      'newsletter-desc': "Subscribe to receive holiday updates, event reminders, and a sprinkle of Christmas magic delivered to your inbox.",
-      'newsletter-placeholder': 'Enter your email address',
+      'newsletter-title': 'Enter the System',
+      'newsletter-desc': "Intercept the signal before everyone else. Don't ride the shockwave — anticipate it. By joining the System, you get access to secret venue coordinates and ticket drops before the official announcement.",
+      'newsletter-placeholder': 'Your email address',
       'newsletter-btn': 'Subscribe',
-      'footer-desc': "Celebrating the magic of Christmas with a live countdown, events, and traditions that bring us together.",
+      'footer-desc': "A Bordeaux-based collective redefining the techno experience across France.",
       'footer-nav-title': 'Navigation',
       'footer-res-title': 'Resources',
       'footer-res-1': 'Gift Ideas',
@@ -369,6 +389,35 @@ function resetReveal() {
    });
 }
 
+// Hero video — gestion autoplay, loop distante, onglet caché
+function setupVideo() {
+   const video = document.querySelector('.hero-video');
+   if (!video) return;
+
+   const tryPlay = () => video.play().catch(() => {});
+
+   // Fallback loop manuel (si le seek échoue sur la vidéo distante)
+   video.addEventListener('ended', () => {
+      video.currentTime = 0;
+      tryPlay();
+   });
+
+   // Reprend quand l'onglet redevient visible
+   document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && video.paused) tryPlay();
+   });
+
+   // Reprend quand la fenêtre reprend le focus
+   window.addEventListener('focus', () => {
+      if (video.paused) tryPlay();
+   });
+
+   // Watchdog léger
+   setInterval(() => {
+      if (video.paused && !document.hidden) tryPlay();
+   }, 1000);
+}
+
 function setupScrollReveal() {
    const targets = document.querySelectorAll(
       '.section-header, .about-image, .about-content, ' +
@@ -406,6 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
    setupContactForm();
    setupLangToggle();
    setupScrollReveal();
+   setupVideo();
    scrollSpy();
    let scrollTicking = false;
    window.addEventListener('scroll', () => {

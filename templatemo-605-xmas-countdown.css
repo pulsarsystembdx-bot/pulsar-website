@@ -616,7 +616,7 @@ nav a.nav-active {
 .target-date svg {
 	width: 18px;
 	height: 18px;
-	stroke: var(--accent-gold);
+	stroke: #60c8f5;
 }
 
 .scroll-indicator {
@@ -706,6 +706,8 @@ section {
 	font-weight: 800;
 	letter-spacing: -2px;
 	color: var(--text-primary);
+	line-height: 1;
+	text-transform: uppercase;
 }
 
 .section-subtitle {
@@ -718,6 +720,7 @@ section {
 /* About Section */
 .about {
 	background: linear-gradient(180deg, transparent 0%, rgba(255, 61, 90, 0.02) 50%, transparent 100%);
+	padding-bottom: 60px;
 }
 
 .about-grid {
@@ -880,8 +883,22 @@ section {
 }
 
 /* Events Section */
+.events .section-header,
+.traditions .section-header,
+.contact-section .section-header {
+	margin-bottom: 50px;
+}
+
+.events .section-subtitle,
+.traditions .section-subtitle {
+	margin-top: 35px;
+}
+
 .events {
 	background: var(--bg-dark);
+	padding-top: 60px;
+	padding-bottom: 0px;
+	scroll-margin-top: 80px;
 }
 
 .events-grid {
@@ -955,7 +972,7 @@ section {
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 1px;
-	color: var(--accent-red);
+	color: #60c8f5;
 }
 
 .event-content {
@@ -994,7 +1011,7 @@ section {
 .event-meta svg {
 	width: 16px;
 	height: 16px;
-	stroke: var(--accent-gold);
+	stroke: #60c8f5;
 }
 
 /* Traditions Section */
@@ -1020,6 +1037,18 @@ section {
 	border-radius: 24px;
 	align-items: center;
 	transition: all 0.4s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.tradition-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: linear-gradient(90deg, #1a6aff, #60c8f5, #a8e8ff);
 }
 
 .tradition-card:hover {
@@ -1067,6 +1096,7 @@ section {
 	color: var(--text-secondary);
 	line-height: 1.6;
 	margin-bottom: 16px;
+	text-align: justify;
 }
 
 .tradition-btn {
@@ -1087,14 +1117,14 @@ section {
 .tradition-btn svg {
 	width: 16px;
 	height: 16px;
-	stroke: var(--accent-gold);
+	stroke: #60c8f5;
 	transition: transform 0.3s ease;
 }
 
 .tradition-btn:hover {
-	background: rgba(255, 215, 0, 0.1);
-	border-color: var(--accent-gold);
-	color: var(--accent-gold);
+	background: rgba(96, 200, 245, 0.1);
+	border-color: #60c8f5;
+	color: #60c8f5;
 }
 
 .tradition-btn:hover svg {
@@ -1104,6 +1134,9 @@ section {
 /* Newsletter Section */
 .newsletter {
 	background: linear-gradient(180deg, transparent 0%, rgba(255, 215, 0, 0.02) 50%, transparent 100%);
+	padding-top: 0;
+	padding-bottom: 0;
+	margin-top: -70px;
 }
 
 .newsletter-container {
@@ -1127,16 +1160,22 @@ section {
 	left: 0;
 	right: 0;
 	height: 2px;
-	background: linear-gradient(90deg, var(--accent-red), var(--accent-gold), var(--accent-green));
+	background: linear-gradient(90deg, #1a6aff, #60c8f5, #a8e8ff);
 }
 
 .newsletter-container p {
 	color: var(--text-secondary);
 	margin-bottom: 40px;
 	font-size: 1.1rem;
-	max-width: 500px;
+	max-width: 600px;
 	margin-left: auto;
 	margin-right: auto;
+	text-align: justify;
+}
+
+.newsletter-container .section-title {
+	font-size: clamp(1.5rem, 3vw, 2.5rem);
+	text-transform: none;
 }
 
 .newsletter-form {
@@ -1164,16 +1203,16 @@ section {
 }
 
 .newsletter-form input:focus {
-	border-color: var(--accent-gold);
-	background: rgba(255, 255, 255, 0.08);
+	border-color: rgba(0, 100, 255, 0.5);
+	background: rgba(255, 255, 255, 0.07);
 }
 
 .newsletter-form button {
 	padding: 18px 36px;
-	background: linear-gradient(135deg, var(--accent-red), #ff6b6b);
+	background: linear-gradient(135deg, #0033aa, #0055cc);
 	border: none;
 	border-radius: 16px;
-	color: var(--text-primary);
+	color: #ffffff;
 	font-family: 'Space Grotesk', sans-serif;
 	font-size: 0.95rem;
 	font-weight: 600;
@@ -1184,7 +1223,7 @@ section {
 
 .newsletter-form button:hover {
 	transform: translateY(-3px);
-	box-shadow: 0 15px 40px var(--glow-red);
+	box-shadow: 0 8px 30px rgba(0, 80, 200, 0.4);
 }
 
 /* Contact Section */
