@@ -267,7 +267,7 @@ const translations = {
       'footer-privacy': 'Politique de confidentialité',
       'footer-terms': "Conditions d'utilisation",
       'contact-title': 'Contacte-nous',
-      'contact-subtitle': 'Une question, une proposition ? On te répond.',
+      'contact-subtitle': 'Une question, une proposition ?',
       'contact-name': 'Nom',
       'contact-name-ph': 'Ton nom',
       'contact-email-label': 'Email',
