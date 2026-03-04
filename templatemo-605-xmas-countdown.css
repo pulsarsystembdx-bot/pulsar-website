@@ -908,12 +908,16 @@ section {
 .events-grid {
 	max-width: 1200px;
 	margin: 0 auto;
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 400px));
+	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	gap: 24px;
-	overflow: hidden;
 	padding: 16px;
+}
+
+.events-grid .event-card {
+	width: 100%;
+	max-width: 400px;
 }
 
 .event-card {
@@ -923,9 +927,6 @@ section {
 	border: 1px solid var(--border-glass);
 	transition: all 0.3s ease;
 	cursor: pointer;
-	text-decoration: none;
-	color: inherit;
-	display: block;
 }
 
 .event-image {
@@ -1853,10 +1854,6 @@ footer {
 		gap: 50px;
 	}
 
-	.events-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
-
 	.traditions-grid {
 		grid-template-columns: 1fr;
 	}
@@ -2039,9 +2036,6 @@ footer {
 		grid-template-columns: 1fr;
 	}
 
-	.events-grid {
-		grid-template-columns: 1fr;
-	}
 
 	.tradition-card {
 		grid-template-columns: 100px 1fr;

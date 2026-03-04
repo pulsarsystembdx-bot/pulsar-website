@@ -299,7 +299,7 @@ const translations = {
       'about-p1': "Pulsar System is a Bordeaux-based association born in late 2024, with the ambition to redefine the party and make all of France vibrate. Our specialty? Taking over unique venues to transform every Techno set into a one-of-a-kind immersive experience.",
       'about-p2': "Our DNA is built on precision-led, healthy, and 100% safe organisation. Whether you are a techno purist or simply curious, we create spaces where sound meets human connection. Each lineup is crafted as a progressive ascent, exploring a wide palette of sonic textures. This stylistic diversity brings together a passionate and diverse crowd, where everyone finds their place on the dancefloor.",
       'about-p3': "But we don't stop there. Our future lies between radical celebration and scientific outreach, feeding your ears as much as your mind.",
-      'events-title': 'Upcoming Events',
+      'events-title': 'Next Events',
       'events-subtitle': 'Mark your calendar for our upcoming landings.',
       'event1-title': 'Soirée Chorale',
       'event1-desc': "An evening of classic Christmas carols performed by our community choir under the stars.",
@@ -644,6 +644,10 @@ function setupStations() {
       grid.addEventListener('scroll', updateArrows);
       updateArrows();
    }
+
+   document.querySelectorAll('[data-href]').forEach(card => {
+      card.addEventListener('click', () => window.open(card.dataset.href, '_blank', 'noopener'));
+   });
 
    document.querySelectorAll('[data-station]').forEach(card => {
       card.addEventListener('click', () => {
