@@ -70,7 +70,6 @@ body {
 	inset: 0;
 	width: 100%;
 	height: 100%;
-	max-height: 100svh;
 	object-fit: cover;
 	z-index: -1;
 	pointer-events: none;
@@ -354,7 +353,6 @@ nav a.nav-active {
 /* Hero Section */
 .hero {
 	min-height: 100vh;
-	min-height: 100svh;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -910,18 +908,12 @@ section {
 .events-grid {
 	max-width: 1200px;
 	margin: 0 auto;
-	display: flex;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 400px));
 	justify-content: center;
 	gap: 24px;
+	overflow: hidden;
 	padding: 16px;
-}
-
-.events-grid .event-card {
-	width: 100%;
-	max-width: 400px;
-	margin: 0 auto;
-	isolation: isolate;
 }
 
 .event-card {
@@ -931,6 +923,9 @@ section {
 	border: 1px solid var(--border-glass);
 	transition: all 0.3s ease;
 	cursor: pointer;
+	text-decoration: none;
+	color: inherit;
+	display: block;
 }
 
 .event-image {
@@ -1136,29 +1131,6 @@ section {
 .stations-grid .event-card {
 	cursor: pointer;
 	transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.events-grid .event-card::after {
-	content: '';
-	position: absolute;
-	top: 16px;
-	right: 16px;
-	width: 32px;
-	height: 32px;
-	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 3h6v6M21 3l-7 7'/%3E%3C/svg%3E");
-	background-size: 28px 28px;
-	background-repeat: no-repeat;
-	background-position: center;
-	opacity: 0;
-	transform: scale(0.6);
-	transition: opacity 0.25s ease, transform 0.25s ease;
-	z-index: 100;
-	pointer-events: none;
-}
-
-.events-grid .event-card:hover::after {
-	opacity: 1;
-	transform: scale(1);
 }
 
 .stations-grid .event-card:hover .event-image img {
@@ -1371,24 +1343,56 @@ section {
 	gap: 12px;
 }
 
+.gallery-thumb-wrap {
+	position: relative;
+	cursor: pointer;
+	min-width: 0;
+	opacity: 0;
+	transform: translateY(10px);
+	animation: galleryFadeIn 0.4s ease forwards;
+}
+
 .station-modal-gallery img,
 .station-modal-gallery video {
 	width: 100%;
 	aspect-ratio: 5/4;
 	object-fit: cover;
 	border-radius: 10px;
-	cursor: pointer;
 	border: 2px solid transparent;
 	transition: all 0.25s ease;
-	opacity: 0;
-	transform: translateY(10px);
-	animation: galleryFadeIn 0.4s ease forwards;
+	display: block;
 }
 
-.station-modal-gallery img:hover,
-.station-modal-gallery video:hover {
+.gallery-thumb-wrap:hover img,
+.gallery-thumb-wrap:hover video {
 	border-color: #60c8f5;
 	transform: scale(1.03);
+}
+
+.gallery-play-icon {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	width: 26px;
+	height: 26px;
+	background: rgba(0, 0, 0, 0.55);
+	border-radius: 50%;
+	pointer-events: none;
+	backdrop-filter: blur(4px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.gallery-play-icon::after {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	border-left: 9px solid white;
+	margin-left: 2px;
 }
 
 @keyframes galleryFadeIn {
@@ -1405,9 +1409,16 @@ section {
 	margin: 0 auto;
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
+	grid-auto-rows: 1fr;
 	gap: 24px;
 	overflow: hidden;
 	padding: 16px;
+}
+
+.traditions-grid .tradition-card:last-child:nth-child(odd) {
+	grid-column: 1 / -1;
+	width: calc(50% - 12px);
+	margin: 0 auto;
 }
 
 .tradition-card {
@@ -1794,11 +1805,6 @@ footer {
 	transform: translateY(0);
 }
 
-.stations-grid .event-card.reveal {
-	opacity: 1;
-	transform: none;
-}
-
 .footer-bottom {
 	max-width: 1200px;
 	margin: 0 auto;
@@ -1853,6 +1859,10 @@ footer {
 
 	.about-grid {
 		gap: 50px;
+	}
+
+	.events-grid {
+		grid-template-columns: repeat(2, 1fr);
 	}
 
 	.traditions-grid {
@@ -2037,6 +2047,9 @@ footer {
 		grid-template-columns: 1fr;
 	}
 
+	.events-grid {
+		grid-template-columns: 1fr;
+	}
 
 	.tradition-card {
 		grid-template-columns: 100px 1fr;

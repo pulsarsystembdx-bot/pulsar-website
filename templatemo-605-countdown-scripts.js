@@ -235,7 +235,7 @@ const translations = {
       'about-h3': "L'<span class=\"text-gradient-light\">harmonie</span> dans le <span class=\"text-gradient-dark\">chaos</span>",
       'about-p1': "Pulsar System, c'est l'énergie d'une association bordelaise née fin 2024 avec l'ambition de redéfinir la fête et faire vibrer la France entière. Notre spécialité ? Investir des lieux atypiques pour transformer chaque set Techno en une expérience immersive unique.",
       'about-p2': "Notre ADN repose sur une organisation millimétrée, saine et 100% safe. Que vous soyez puristes ou simples curieux, nous créons des espaces où le son rencontre l'humain. Chaque programmation est pensée pour être une ascension progressive, explorant une large palette de textures sonores. Cette diversité de styles nous permet de rassembler un public hétérogène et passionné, où chaque profil trouve sa place sur le dancefloor.",
-      'about-p3': "Mais nous ne nous arrêtons pas là. Notre futur s'écrit entre fête radicale et médiation scientifique, pour nourrir vos oreilles autant que votre esprit.",
+      'about-p3': "Mais nous ne nous arrêtons pas là. Notre futur s'écrit entre fête intelligente et médiation scientifique, pour nourrir vos oreilles autant que votre esprit.",
       'events-title': 'Prochains Events',
       'events-subtitle': 'Marque ton agenda pour nos prochains atterrissages.',
       'event1-title': 'Soirée Chorale',
@@ -250,6 +250,8 @@ const translations = {
       'trad1-desc': "Pulsar System, c'est avant tout une aventure humaine. Tu veux vivre l'expérience de l'intérieur et nous aider à rendre la fête plus belle ? On t'attend !",
       'trad2-title': 'Candidature DJ',
       'trad2-desc': "Tu es DJ et tu souhaites mixer pour Pulsar System ? Ce formulaire est pour toi. Nous sommes régulièrement en recherche de nouveaux talents pour enflammer nos événements !",
+      'trad3-title': 'Partenariat',
+      'trad3-desc': "Tu représentes une marque, une structure ou un lieu et tu souhaites collaborer avec Pulsar System ? Contacte-nous pour explorer ensemble les opportunités de partenariat.",
       'learn-more': 'En savoir plus',
       'newsletter-title': 'Entre dans le système',
       'newsletter-desc': "Intercepte le signal avant tout le monde. En rejoignant le Système, tu accèdes aux ouvertures de billetterie avant l'annonce officielle ainsi qu'à d'autres surprises exclusives.",
@@ -297,8 +299,8 @@ const translations = {
       'about-h3': '<span class="text-gradient-light">Harmony</span> in <span class="text-gradient-dark">chaos</span>',
       'about-p1': "Pulsar System is a Bordeaux-based association born in late 2024, with the ambition to redefine the party and make all of France vibrate. Our specialty? Taking over unique venues to transform every Techno set into a one-of-a-kind immersive experience.",
       'about-p2': "Our DNA is built on precision-led, healthy, and 100% safe organisation. Whether you are a techno purist or simply curious, we create spaces where sound meets human connection. Each lineup is crafted as a progressive ascent, exploring a wide palette of sonic textures. This stylistic diversity brings together a passionate and diverse crowd, where everyone finds their place on the dancefloor.",
-      'about-p3': "But we don't stop there. Our future lies between radical celebration and scientific outreach, feeding your ears as much as your mind.",
-      'events-title': 'Next Events',
+      'about-p3': "But we don't stop there. Our future lies between intelligent celebration and scientific outreach, feeding your ears as much as your mind.",
+      'events-title': 'Upcoming Events',
       'events-subtitle': 'Mark your calendar for our upcoming landings.',
       'event1-title': 'Soirée Chorale',
       'event1-desc': "An evening of classic Christmas carols performed by our community choir under the stars.",
@@ -312,6 +314,8 @@ const translations = {
       'trad1-desc': "Pulsar System is above all a human adventure. Want to experience it from the inside and help make the party even better? We're waiting for you!",
       'trad2-title': 'DJ Application',
       'trad2-desc': "Are you a DJ looking to play for Pulsar System? This form is for you. We're always on the lookout for new talent to ignite our events!",
+      'trad3-title': 'Partnership',
+      'trad3-desc': "Do you represent a brand, an organisation, or a venue and want to collaborate with Pulsar System? Get in touch to explore partnership opportunities together.",
       'learn-more': 'Learn More',
       'newsletter-title': 'Enter the System',
       'newsletter-desc': "Intercept the signal before anyone else. By joining the System, you gain early access to ticket releases before the official announcement, as well as other exclusive surprises.",
@@ -322,7 +326,7 @@ const translations = {
       'footer-contact-title': 'Contact',
       'footer-copy': '© 2026 Pulsar System. All rights reserved.',
       'contact-title': 'Contact Us',
-      'contact-subtitle': 'A question, a proposal? We will get back to you.',
+      'contact-subtitle': 'A question, a proposal?',
       'contact-name': 'Name',
       'contact-name-ph': 'Your name',
       'contact-email-label': 'Email',
@@ -537,9 +541,11 @@ function setupStations() {
          video.loop = true;
          video.muted = true;
          video.playsInline = true;
+         video.preload = 'auto';
          video.style.width = '100%';
          video.style.borderRadius = '12px';
          modalMain.appendChild(video);
+         video.play().catch(() => {});
       } else {
          const img = document.createElement('img');
          img.id = 'stationModalImg';
@@ -558,6 +564,7 @@ function setupStations() {
       if (navPrev) navPrev.disabled = idx <= 0;
       if (navNext) navNext.disabled = idx >= stationKeys.length - 1;
       const title = typeof data.title === 'object' ? (data.title[currentLang] || data.title.fr) : data.title;
+      setMainMedia(data.images[0], title, data.credits?.[0]);
       modalTitle.textContent = title;
       modalDesc.innerHTML = (data.desc[currentLang] || data.desc.fr).replace(/\n\n/g, '<br><br>');
       const locEl = document.querySelector('#stationModalLocation span span');
@@ -565,15 +572,22 @@ function setupStations() {
       modalGallery.innerHTML = '';
       data.images.forEach((src, i) => {
          const vid = isVideo(src);
+         const wrap = document.createElement('div');
+         wrap.className = 'gallery-thumb-wrap';
          const thumb = document.createElement(vid ? 'video' : 'img');
          thumb.src = src;
-         if (vid) { thumb.muted = true; thumb.playsInline = true; }
+         if (vid) { thumb.muted = true; thumb.playsInline = true; thumb.preload = 'metadata'; }
          else thumb.alt = data.title;
-         thumb.style.animationDelay = `${i * 0.08}s`;
-         thumb.addEventListener('click', () => setMainMedia(src, data.title, data.credits?.[i]));
-         modalGallery.appendChild(thumb);
+         wrap.style.animationDelay = `${i * 0.08}s`;
+         wrap.appendChild(thumb);
+         if (vid) {
+            const playIcon = document.createElement('div');
+            playIcon.className = 'gallery-play-icon';
+            wrap.appendChild(playIcon);
+         }
+         wrap.addEventListener('click', () => setMainMedia(src, data.title, data.credits?.[i]));
+         modalGallery.appendChild(wrap);
       });
-      setMainMedia(data.images[0], title, data.credits?.[0]);
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
@@ -695,15 +709,6 @@ document.addEventListener('DOMContentLoaded', () => {
    setupScrollReveal();
    setupVideo();
    setupStations();
-   document.querySelectorAll('[data-href]').forEach(card => {
-      card.addEventListener('click', () => {
-         const a = document.createElement('a');
-         a.href = card.dataset.href;
-         a.target = '_blank';
-         a.rel = 'noopener';
-         a.click();
-      });
-   });
    handleScroll();
    let scrollTicking = false;
    window.addEventListener('scroll', () => {
