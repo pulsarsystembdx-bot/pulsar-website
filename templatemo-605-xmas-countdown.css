@@ -1418,7 +1418,7 @@ section {
 .traditions-grid .tradition-card:last-child:nth-child(odd) {
 	grid-column: 1 / -1;
 	width: calc(50% - 12px);
-	margin: 0 auto;
+	justify-self: center;
 }
 
 .tradition-card {
