@@ -1407,18 +1407,15 @@ section {
 .traditions-grid {
 	max-width: 1200px;
 	margin: 0 auto;
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	grid-auto-rows: 1fr;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
 	gap: 24px;
-	overflow: hidden;
 	padding: 16px;
 }
 
-.traditions-grid .tradition-card:last-child:nth-child(odd) {
-	grid-column: 1 / -1;
-	width: calc(50% - 12px);
-	justify-self: center;
+.traditions-grid .tradition-card {
+	flex: 0 0 calc(50% - 12px);
 }
 
 .tradition-card {
@@ -1866,7 +1863,12 @@ footer {
 	}
 
 	.traditions-grid {
-		grid-template-columns: 1fr;
+		flex-direction: column;
+	}
+
+	.traditions-grid .tradition-card {
+		flex: 0 0 auto;
+		width: 100%;
 	}
 
 	.gallery-grid {
